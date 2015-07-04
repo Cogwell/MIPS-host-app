@@ -13,6 +13,8 @@ class MIPS;
 
 class Console;
 class SettingsDialog;
+class pseDialog;
+class psgPoint;
 
 class MIPS : public QMainWindow
 {
@@ -27,6 +29,9 @@ public:
     virtual void mousePressEvent(QMouseEvent * event);
     QString SendMessage(QString);
     void SendCommand(QString message);
+    int Referenced(QList<psgPoint*> P, int i);
+    QString BuildTableCommand(QList<psgPoint*> P);
+    void UpdatePSG(void);
 
 private slots:
     void MIPSconnect(void);
@@ -46,13 +51,29 @@ private slots:
     void TrigPulse(void);
     void DCbiasPower(void);
     void UpdateRFdriver(void);
+    // These slots automatically connect due to naming convention
+    void on_pbDownload_pressed(void);
+    void on_pbViewTable_pressed();
+    void on_pbLoadFromFile_pressed();
+    void on_pbCreateNew_pressed();
+    void on_pbSaveToFile_pressed();
+    void on_pbEditCurrent_pressed();
+    void on_leSequenceNumber_textEdited(const QString &arg1);
+    void on_chkAutoAdvance_clicked(bool checked);
+    void on_pbTrigger_pressed();
+
+    void on_leSRFFRQ_editingFinished();
+
+    void on_leSRFDRV_editingFinished();
 
 private:
     Ui::MIPS *ui;
     Console *console;
     SettingsDialog *settings;
+    pseDialog *pse;
     QSerialPort *serial;
     QTimer *pollTimer;
+    QList<psgPoint*> psg;
 };
 
 #endif // MIPS_H

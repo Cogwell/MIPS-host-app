@@ -17,15 +17,18 @@ SOURCES += main.cpp\
         mips.cpp \
     console.cpp \
     settingsdialog.cpp \
-    ringbuffer.cpp
+    ringbuffer.cpp \
+    pse.cpp
 
 HEADERS  += mips.h \
     console.h \
     settingsdialog.h \
-    ringbuffer.h
+    ringbuffer.h \
+    pse.h
 
 FORMS    += mips.ui \
-    settingsdialog.ui
+    settingsdialog.ui \
+    pse.ui
 
 RESOURCES += \
     files.qrc

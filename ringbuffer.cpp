@@ -75,7 +75,7 @@ int RingBuffer::putch(char c)
 
 QString RingBuffer::getline(void)
 {
-    QString str;
+    QString str="";
     char c;
 
     if(lines <= 0) return str;

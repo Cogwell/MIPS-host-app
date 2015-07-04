@@ -87,6 +87,9 @@
         <height>32</height>
        </rect>
       </property>
+      <property name="toolTip">
+       <string>Press this button to connect to MIPS.</string>
+      </property>
       <property name="text">
        <string>Connect to MIPS</string>
       </property>
@@ -100,6 +103,9 @@
         <height>32</height>
        </rect>
       </property>
+      <property name="toolTip">
+       <string>Press this button to configure the serial port before connecting to MIPS.</string>
+      </property>
       <property name="text">
        <string>Configurate port</string>
       </property>
@@ -112,6 +118,9 @@
         <width>151</width>
         <height>32</height>
        </rect>
+      </property>
+      <property name="toolTip">
+       <string>Press to disconnect from MIPS.</string>
       </property>
       <property name="text">
        <string>Disconnect</string>
@@ -2032,6 +2041,346 @@ enabled</string>
      <attribute name="title">
       <string>Pulse Sequence Generation</string>
      </attribute>
+     <widget class="QGroupBox" name="gbPulseSequence">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>0</y>
+        <width>681</width>
+        <height>76</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Pulse sequence</string>
+      </property>
+      <widget class="QPushButton" name="pbLoadFromFile">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>30</y>
+         <width>151</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Load from file</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pbEditCurrent">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>30</y>
+         <width>151</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Edit current</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pbCreateNew">
+       <property name="geometry">
+        <rect>
+         <x>350</x>
+         <y>30</y>
+         <width>151</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Create new</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pbSaveToFile">
+       <property name="geometry">
+        <rect>
+         <x>520</x>
+         <y>30</y>
+         <width>151</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Save to file</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="gbSequenceGenerationControl">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>90</y>
+        <width>681</width>
+        <height>106</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Sequence generation control</string>
+      </property>
+      <widget class="QComboBox" name="comboClock">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>35</y>
+         <width>141</width>
+         <height>26</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_30">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>40</y>
+         <width>61</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Clock</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_31">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>70</y>
+         <width>61</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Trigger</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="comboTrigger">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>65</y>
+         <width>141</width>
+         <height>26</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_32">
+       <property name="geometry">
+        <rect>
+         <x>385</x>
+         <y>40</y>
+         <width>166</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>External clock frequency</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="leExternClock">
+       <property name="geometry">
+        <rect>
+         <x>550</x>
+         <y>35</y>
+         <width>113</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>6250</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QPushButton" name="pbDownload">
+      <property name="geometry">
+       <rect>
+        <x>15</x>
+        <y>370</y>
+        <width>151</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Download to MIPS</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pbViewTable">
+      <property name="geometry">
+       <rect>
+        <x>265</x>
+        <y>370</y>
+        <width>166</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>View table command</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pbTrigger">
+      <property name="geometry">
+       <rect>
+        <x>530</x>
+        <y>370</y>
+        <width>151</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Trigger</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_33">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>230</y>
+        <width>121</width>
+        <height>36</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Select pulse sequence number</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="leSequenceNumber">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>235</y>
+        <width>76</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>1</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="chkAutoAdvance">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>290</y>
+        <width>181</width>
+        <height>46</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Advance pulse sequence
+number on each trigger</string>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_4">
+      <property name="geometry">
+       <rect>
+        <x>305</x>
+        <y>210</y>
+        <width>371</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Edit loaded pulse sequence time point</string>
+      </property>
+      <widget class="QLabel" name="label_34">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>35</y>
+         <width>121</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Time point counts</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_35">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>65</y>
+         <width>101</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Channel</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_36">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>95</y>
+         <width>96</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Value</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="leTimePoint">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>30</y>
+         <width>76</width>
+         <height>21</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="leChannel">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>60</y>
+         <width>76</width>
+         <height>21</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="leValue">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>90</y>
+         <width>76</width>
+         <height>21</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pbRead">
+       <property name="geometry">
+        <rect>
+         <x>245</x>
+         <y>40</y>
+         <width>111</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Read</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pbWrite">
+       <property name="geometry">
+        <rect>
+         <x>245</x>
+         <y>80</y>
+         <width>111</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Write</string>
+       </property>
+      </widget>
+     </widget>
     </widget>
    </widget>
   </widget>
@@ -2057,7 +2406,15 @@ enabled</string>
     </property>
     <addaction name="actionClear"/>
    </widget>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
+   </widget>
    <addaction name="menuAbout"/>
+   <addaction name="menuFile"/>
    <addaction name="menuTerminal"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -2077,6 +2434,16 @@ enabled</string>
   <action name="actionClear">
    <property name="text">
     <string>Clear</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Load</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
    </property>
   </action>
  </widget>

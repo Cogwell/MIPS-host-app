@@ -1,5 +1,22 @@
 //
+// MIPS
 //
+// This application is desiged to communicate with the MIPS system using a USB commection
+// to the MIPS system. The MIPS system is controlled using a Arduino Due and the USB
+// connection can be made to the native port or the programming port. If using the native
+// port then the comm parameters are not important, if using the programming port set
+// the baud rate to 115200, 8 bits, no parity, and 1 stop bit.
+//
+// This application support control and monitoring of most MIPS function for DCbias and
+// digital IO function. Support is provided to create and edit pulse sequences.
+//
+// Gordon Anderson
+//
+//  Revision history:
+//  1.0, July 6, 2015
+//      1.) Initial release
+//
+//  To do list:
 //
 #include "mips.h"
 #include "ui_mips.h"
@@ -36,8 +53,12 @@ MIPS::MIPS(QWidget *parent) :
     settings = new SettingsDialog;
 
     ui->actionClear->setEnabled(true);
+    ui->actionOpen->setEnabled(true);
+    ui->actionSave->setEnabled(true);
 
     connect(ui->actionClear, SIGNAL(triggered()), console, SLOT(clear()));
+    connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(loadSettings()));
+    connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(saveSettings()));
     connect(ui->pbConfigure, SIGNAL(pressed()), settings, SLOT(show()));
     connect(ui->tabMIPS,SIGNAL(currentChanged(int)),this,SLOT(tabSelected()));
     connect(ui->pbConnect,SIGNAL(pressed()),this,SLOT(MIPSconnect()));
@@ -45,6 +66,7 @@ MIPS::MIPS(QWidget *parent) :
     connect(serial, SIGNAL(error(QSerialPort::SerialPortError)), this,SLOT(handleError(QSerialPort::SerialPortError)));
     connect(serial, SIGNAL(readyRead()), this, SLOT(readData2RingBuffer()));
     connect(pollTimer, SIGNAL(timeout()), this, SLOT(pollLoop()));
+    connect(ui->actionAbout,SIGNAL(triggered(bool)), this, SLOT(DisplayAboutMessage()));
     // DCbias page setup
     QObjectList widgetList = ui->gbDCbias1->children();
     foreach(QObject *w, widgetList)
@@ -107,6 +129,99 @@ MIPS::~MIPS()
 {
     delete settings;
     delete ui;
+}
+
+void MIPS::DisplayAboutMessage(void)
+{
+    QMessageBox::information(
+        this,
+        tr("Application Named"),
+        tr("MIPS interface application, written by Gordon Anderson. This application allows communications with the MIPS system supporting monitoring and control as well as pulse sequence generation.") );
+}
+
+void MIPS::loadSettings(void)
+{
+    QStringList resList;
+
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Load Pulse Sequence File"),"",tr("Files (*.psg *.*)"));
+    if(fileName == "") return;
+    QObjectList widgetList = ui->gbDCbias1->children();
+    widgetList += ui->gbDCbias2->children();
+    widgetList += ui->gbDigitalOut->children();
+    QFile file(fileName);
+    if(file.open(QIODevice::ReadOnly|QIODevice::Text))
+    {
+        // We're going to streaming the file
+        // to the QString
+        QTextStream stream(&file);
+
+        QString line;
+        do
+        {
+            line = stream.readLine();
+            resList = line.split(",");
+            if(resList.count() == 2)
+            {
+                qDebug() << resList[0] << resList[1];
+                foreach(QObject *w, widgetList)
+                {
+                    if(w->objectName().mid(0,3) == "leS")
+                    {
+                        if(resList[1] != "") if(w->objectName() == resList[0]) ((QLineEdit *)w)->setText(resList[1]);
+                    }
+                    if(w->objectName().mid(0,4) == "chkS")
+                    {
+                        if(w->objectName() == resList[0])
+                        {
+                            if(resList[1] == "true")
+                            {
+                                ((QCheckBox *)w)->setChecked(true);
+                            }
+                            else ((QCheckBox *)w)->setChecked(false);
+                        }
+                    }
+                }
+
+            }
+        } while(!line.isNull());
+        file.close();
+        ui->statusBar->showMessage("Settings loaded to " + fileName,2000);
+    }
+}
+
+void MIPS::saveSettings(void)
+{
+    QString res;
+
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save to Settings File"),"",tr("Files (*.settings)"));
+    if(fileName == "") return;
+    QFile file(fileName);
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        // We're going to streaming text to the file
+        QTextStream stream(&file);
+
+        QObjectList widgetList = ui->gbDCbias1->children();
+        widgetList += ui->gbDCbias2->children();
+        widgetList += ui->gbDigitalOut->children();
+        foreach(QObject *w, widgetList)
+        {
+            if(w->objectName().mid(0,3) == "leS")
+            {
+                res = w->objectName() + "," + ((QLineEdit *)w)->text() + "\n";
+                stream << res;
+            }
+            if(w->objectName().mid(0,4) == "chkS")
+            {
+                res = w->objectName() + ",";
+                if(((QCheckBox *)w)->checkState()) res += "true\n";
+                else res += "false\n";
+                stream << res;
+            }
+        }
+        file.close();
+        ui->statusBar->showMessage("Settings saved to " + fileName,2000);
+    }
 }
 
 void MIPS::pollLoop(void)
@@ -456,7 +571,10 @@ void MIPS::readData2RingBuffer(void)
 void MIPS::openSerialPort()
 {
     SettingsDialog::Settings p = settings->settings();
-    serial->setPortName("cu." + p.name);
+    serial->setPortName(p.name);
+    #if defined(Q_OS_MAC)
+        serial->setPortName("cu." + p.name);
+    #endif
     serial->setBaudRate(p.baudRate);
     serial->setDataBits(p.dataBits);
     serial->setParity(p.parity);
@@ -702,7 +820,6 @@ void MIPS::on_pbSaveToFile_pressed()
         return;
     }
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save to Pulse Sequence File"),"",tr("Files (*.psg)"));
-    qDebug() << fileName;
     QFile file(fileName);
     file.open(QIODevice::WriteOnly);
 
@@ -759,4 +876,14 @@ void MIPS::on_leSRFFRQ_editingFinished()
 void MIPS::on_leSRFDRV_editingFinished()
 {
     SendCommand("SRFDRV," + ui->comboRFchan->currentText() + "," + ui->leSRFDRV->text() + "\n");
+}
+
+void MIPS::on_pbRead_pressed()
+{
+    ui->leValue->setText(SendMessage("GTBLVLT," + ui->leTimePoint->text() + "," + ui->leChannel->text() + "\n"));
+}
+
+void MIPS::on_pbWrite_pressed()
+{
+    SendCommand("STBLVLT," + ui->leTimePoint->text() + "," + ui->leChannel->text() + "," + ui->leValue->text() + "\n");
 }

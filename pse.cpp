@@ -69,6 +69,8 @@ pseDialog::pseDialog(QList<psgPoint *> *psg, QWidget *parent) :
     ui(new Ui::pseDialog)
 {
     ui->setupUi(this);
+    // Make the dialog fixed size.
+    this->setFixedSize(this->size());
 
     qDebug() << psg->size();
     p = psg;

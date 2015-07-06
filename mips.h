@@ -51,6 +51,9 @@ private slots:
     void TrigPulse(void);
     void DCbiasPower(void);
     void UpdateRFdriver(void);
+    void loadSettings(void);
+    void saveSettings(void);
+    void DisplayAboutMessage(void);
     // These slots automatically connect due to naming convention
     void on_pbDownload_pressed(void);
     void on_pbViewTable_pressed();
@@ -61,10 +64,10 @@ private slots:
     void on_leSequenceNumber_textEdited(const QString &arg1);
     void on_chkAutoAdvance_clicked(bool checked);
     void on_pbTrigger_pressed();
-
     void on_leSRFFRQ_editingFinished();
-
     void on_leSRFDRV_editingFinished();
+    void on_pbRead_pressed();
+    void on_pbWrite_pressed();
 
 private:
     Ui::MIPS *ui;

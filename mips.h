@@ -6,6 +6,7 @@
 #include <QtSerialPort/QSerialPort>
 #include <QLineEdit>
 #include <QTimer>
+#include <QProcess>
 
 namespace Ui {
 class MIPS;
@@ -54,6 +55,8 @@ private slots:
     void loadSettings(void);
     void saveSettings(void);
     void DisplayAboutMessage(void);
+    void programMIPS(void);
+    void readProcessOutput(void);
     // These slots automatically connect due to naming convention
     void on_pbDownload_pressed(void);
     void on_pbViewTable_pressed();
@@ -77,6 +80,8 @@ private:
     QSerialPort *serial;
     QTimer *pollTimer;
     QList<psgPoint*> psg;
+    QProcess process;
+    QString  appPath;
 };
 
 #endif // MIPS_H

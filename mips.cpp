@@ -10,11 +10,23 @@
 // This application support control and monitoring of most MIPS function for DCbias and
 // digital IO function. Support is provided to create and edit pulse sequences.
 //
+// Note!
+//  Opening the serial port on the native USB connection to the DUE and sentting the
+//  data terminal ready lie to false will erase the DUE flash.
+//          serial->setDataTerminalReady(false);
+//
 // Gordon Anderson
 //
 //  Revision history:
 //  1.0, July 6, 2015
 //      1.) Initial release
+//  1.1, July 8, 2015
+//      1.) Added MIPS firmware download function. Works on PC and MAC
+//      2.) Removed the 1200 baud rate and all rates below 9600.
+//  1.2, July 12, 2015
+//      1.) Fixed the bugs in the firmware download feature.
+//      2.) Tested on MAC and PC
+//      3.) Updated a lot of screen issues from PC to MAC. Most features tested.
 //
 //  To do list:
 //
@@ -34,7 +46,10 @@
 #include <QDoubleValidator>
 #include <QCursor>
 #include <QDebug>
-#include<QFileDialog>
+#include <QFileDialog>
+#include <QDir>
+#include <QProcess>
+#include <QFileInfo>
 
 RingBuffer rb;
 
@@ -46,6 +61,9 @@ MIPS::MIPS(QWidget *parent) :
     // Make the dialog fixed size.
     this->setFixedSize(this->size());
 
+//  MIPS::setProperty("font", QFont("Times New Roman", 5));
+
+    appPath = QApplication::applicationDirPath();
     pollTimer = new QTimer;
     console = new Console(ui->Terminal);
     console->setEnabled(false);
@@ -55,15 +73,17 @@ MIPS::MIPS(QWidget *parent) :
     ui->actionClear->setEnabled(true);
     ui->actionOpen->setEnabled(true);
     ui->actionSave->setEnabled(true);
+    ui->actionProgram_MIPS->setEnabled(true);
 
     connect(ui->actionClear, SIGNAL(triggered()), console, SLOT(clear()));
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(loadSettings()));
     connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(saveSettings()));
+    connect(ui->actionProgram_MIPS, SIGNAL(triggered()), this, SLOT(programMIPS()));
     connect(ui->pbConfigure, SIGNAL(pressed()), settings, SLOT(show()));
     connect(ui->tabMIPS,SIGNAL(currentChanged(int)),this,SLOT(tabSelected()));
     connect(ui->pbConnect,SIGNAL(pressed()),this,SLOT(MIPSconnect()));
     connect(ui->pbDisconnect,SIGNAL(pressed()),this,SLOT(MIPSdisconnect()));
-    connect(serial, SIGNAL(error(QSerialPort::SerialPortError)), this,SLOT(handleError(QSerialPort::SerialPortError)));
+//    connect(serial, SIGNAL(error(QSerialPort::SerialPortError)), this,SLOT(handleError(QSerialPort::SerialPortError)));
     connect(serial, SIGNAL(readyRead()), this, SLOT(readData2RingBuffer()));
     connect(pollTimer, SIGNAL(timeout()), this, SLOT(pollLoop()));
     connect(ui->actionAbout,SIGNAL(triggered(bool)), this, SLOT(DisplayAboutMessage()));
@@ -131,6 +151,97 @@ MIPS::~MIPS()
     delete ui;
 }
 
+void MIPS::programMIPS(void)
+{
+    QString cmd;
+    QString str;
+
+    // Pop up a warning message and make sure the user wants to proceed
+    QMessageBox msgBox;
+    QString msg = "This will erase the MIPS firmware and attemp to load a new version. ";
+    msg += "Make sure you have a new MIPS binary file to load, it should have a .bin extension.\n";
+    msg += "The MIPS firmware will be erased so if your bin file is invalid or fails to program, MIPS will be rendered useless!\n";
+    msgBox.setText(msg);
+    msgBox.setInformativeText("Are you sure you want to contine?");
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    int ret = msgBox.exec();
+    if(ret == QMessageBox::No) return;
+    // Select the Terminal tab and clear the display
+    ui->tabMIPS->setCurrentIndex(1);
+    // Select the binary file we are going to load to MIPS
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Load MIPS firmware .bin file"),"",tr("Files (*.psg *.*)"));
+    if(fileName == "") return;
+    // Make sure MIPS is in ready state
+    msg = "Unplug any RF drive heads from MIPS before you proceed. This includes unplugging the FAIMS RF deck as well. ";
+    msg += "It is assumed that you have already established communications with the MIPS system. ";
+    msg += "If the connection is not establised this function will exit with no action.";
+    msgBox.setText(msg);
+    msgBox.setInformativeText("");
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.exec();
+    // Select the Terminal tab and clear the display
+//    ui->tabMIPS->setCurrentIndex(1);
+    console->clear();
+    // Make sure the app is connected to MIPS
+    if(!serial->isOpen())
+    {
+        console->putData("This application is not connected to MIPS!\n");
+        return;
+    }
+    // Make sure we can locate the programmer tool...
+    #if defined(Q_OS_MAC)
+        cmd = appPath + "/bossac";
+    #else
+        cmd = appPath + "/bossac.exe";
+    #endif
+    QFileInfo checkFile(cmd);
+    if (!checkFile.exists() || !checkFile.isFile())
+    {
+        console->putData("Can't find the programmer!\n");
+        console->putData(cmd.toStdString().c_str());
+        return;
+    }
+    // Erase MIPS's flash
+    console->putData("MIPS is erased!\n");
+    qDebug() << "erasing";
+    closeSerialPort();
+    QThread::sleep(1);
+    while(serial->isOpen()) QApplication::processEvents();
+    serial->setBaudRate(QSerialPort::Baud1200);
+    QApplication::processEvents();
+    serial->open(QIODevice::ReadWrite);
+    serial->setDataTerminalReady(false);
+    QThread::sleep(1);
+    serial->close();
+    QApplication::processEvents();
+    QThread::sleep(5);
+    // Download the bin file to MIPS and restart MIPS
+    QApplication::processEvents();
+    cmd = appPath + "/bossac -e -w -v -b " + fileName + " -R";
+    console->putData(cmd.toStdString().c_str());
+    console->putData("\n");
+    QApplication::processEvents();
+    QStringList arguments;
+    arguments << "-c";
+    arguments << cmd;
+//    arguments << " -h";
+    #if defined(Q_OS_MAC)
+        process.start("/bin/bash",arguments);
+    #else
+        process.start(cmd);
+    #endif
+    console->putData("Download should start soon...\n");
+    connect(&process,SIGNAL(readyReadStandardOutput()),this,SLOT(readProcessOutput()));
+    connect(&process,SIGNAL(readyReadStandardError()),this,SLOT(readProcessOutput()));
+}
+
+void MIPS::readProcessOutput(void)
+{
+    console->putData(process.readAllStandardOutput());
+    console->putData(process.readAllStandardError());
+}
+
 void MIPS::DisplayAboutMessage(void)
 {
     QMessageBox::information(
@@ -162,12 +273,16 @@ void MIPS::loadSettings(void)
             resList = line.split(",");
             if(resList.count() == 2)
             {
-                qDebug() << resList[0] << resList[1];
+//                qDebug() << resList[0] << resList[1];
                 foreach(QObject *w, widgetList)
                 {
                     if(w->objectName().mid(0,3) == "leS")
                     {
-                        if(resList[1] != "") if(w->objectName() == resList[0]) ((QLineEdit *)w)->setText(resList[1]);
+                        if(resList[1] != "") if(w->objectName() == resList[0])
+                        {
+                            ((QLineEdit *)w)->setText(resList[1]);
+                            QMetaObject::invokeMethod(w, "editingFinished");
+                        }
                     }
                     if(w->objectName().mid(0,4) == "chkS")
                     {
@@ -424,8 +539,17 @@ void MIPS::mousePressEvent(QMouseEvent * event)
 
 void MIPS::resizeEvent(QResizeEvent* event)
 {
-   QMainWindow::resizeEvent(event);
+
+   ui->tabMIPS->setFixedWidth(MIPS::width());
+   #if defined(Q_OS_MAC)
+    ui->tabMIPS->setFixedHeight(MIPS::height()-(ui->statusBar->height()));
+   #else
+    // Not sure why I need this 3x for a windows system??
+    ui->tabMIPS->setFixedHeight(MIPS::height()-(ui->statusBar->height()*3));
+   #endif
+
    console->resize(ui->Terminal);
+   QMainWindow::resizeEvent(event);
 }
 
 void MIPS::UpdateDCbias(void)
@@ -478,6 +602,7 @@ void MIPS::MIPSconnect(void)
         return;
     }
     openSerialPort();
+    serial->setDataTerminalReady(true);
     disconnect(ui->comboRFchan, SIGNAL(currentTextChanged(QString)),0,0);
     ui->lblMIPSconfig->setText("MIPS: ");
     res = SendMessage("GVER\n");
@@ -510,6 +635,7 @@ void MIPS::tabSelected()
 {
     if( ui->tabMIPS->tabText(ui->tabMIPS->currentIndex()) == "System")
     {
+        settings->fillPortsInfo();
         disconnect(serial, SIGNAL(readyRead()),0,0);
         connect(serial, SIGNAL(readyRead()), this, SLOT(readData2RingBuffer()));
     }
@@ -570,6 +696,7 @@ void MIPS::readData2RingBuffer(void)
 
 void MIPS::openSerialPort()
 {
+    connect(serial, SIGNAL(error(QSerialPort::SerialPortError)), this,SLOT(handleError(QSerialPort::SerialPortError)));
     SettingsDialog::Settings p = settings->settings();
     serial->setPortName(p.name);
     #if defined(Q_OS_MAC)
@@ -600,6 +727,7 @@ void MIPS::closeSerialPort()
     if (serial->isOpen()) serial->close();
     console->setEnabled(false);
     ui->statusBar->showMessage(tr("Disconnected"));
+    disconnect(serial, SIGNAL(error(QSerialPort::SerialPortError)),0,0);
 }
 
 void MIPS::handleError(QSerialPort::SerialPortError error)

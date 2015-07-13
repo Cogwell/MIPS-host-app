@@ -72,6 +72,7 @@ public:
 
     explicit SettingsDialog(QWidget *parent = 0);
     ~SettingsDialog();
+    void fillPortsInfo();
 
     Settings settings() const;
 
@@ -83,7 +84,7 @@ private slots:
 
 private:
     void fillPortsParameters();
-    void fillPortsInfo();
+//    void fillPortsInfo();
     void updateSettings();
 
 private:

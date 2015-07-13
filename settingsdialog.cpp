@@ -119,9 +119,6 @@ void SettingsDialog::checkCustomDevicePathPolicy(int idx)
 
 void SettingsDialog::fillPortsParameters()
 {
-    ui->baudRateBox->addItem(QStringLiteral("1200"), QSerialPort::Baud1200);
-    ui->baudRateBox->addItem(QStringLiteral("2400"), QSerialPort::Baud2400);
-    ui->baudRateBox->addItem(QStringLiteral("4800"), QSerialPort::Baud4800);
     ui->baudRateBox->addItem(QStringLiteral("9600"), QSerialPort::Baud9600);
     ui->baudRateBox->addItem(QStringLiteral("19200"), QSerialPort::Baud19200);
     ui->baudRateBox->addItem(QStringLiteral("38400"), QSerialPort::Baud38400);

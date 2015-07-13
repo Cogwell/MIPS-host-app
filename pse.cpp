@@ -78,6 +78,7 @@ pseDialog::pseDialog(QList<psgPoint *> *psg, QWidget *parent) :
     CurrentIndex = 0;
     UpdateDialog(activePoint);
 
+//    pseDialog::setProperty("font", QFont("Times New Roman", 5));
     QObjectList widgetList = ui->gbDigitalOut->children();
     foreach(QObject *w, widgetList)
     {

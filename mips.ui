@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>699</width>
-    <height>504</height>
+    <width>797</width>
+    <height>621</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MIPS, Version 1.0 July 6, 2015</string>
+   <string>MIPS, Version 1.2 July 12, 2015</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QTabWidget" name="tabMIPS">
@@ -19,8 +19,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>701</width>
-      <height>451</height>
+      <width>796</width>
+      <height>521</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -53,9 +53,9 @@
       <property name="geometry">
        <rect>
         <x>320</x>
-        <y>30</y>
-        <width>131</width>
-        <height>16</height>
+        <y>25</y>
+        <width>241</width>
+        <height>31</height>
        </rect>
       </property>
       <property name="text">
@@ -65,8 +65,8 @@
      <widget class="QLabel" name="lblMIPSconfig">
       <property name="geometry">
        <rect>
-        <x>350</x>
-        <y>60</y>
+        <x>405</x>
+        <y>85</y>
         <width>331</width>
         <height>331</height>
        </rect>
@@ -81,9 +81,9 @@
      <widget class="QPushButton" name="pbConnect">
       <property name="geometry">
        <rect>
-        <x>70</x>
-        <y>250</y>
-        <width>151</width>
+        <x>60</x>
+        <y>280</y>
+        <width>181</width>
         <height>32</height>
        </rect>
       </property>
@@ -97,9 +97,9 @@
      <widget class="QPushButton" name="pbConfigure">
       <property name="geometry">
        <rect>
-        <x>70</x>
-        <y>200</y>
-        <width>151</width>
+        <x>60</x>
+        <y>205</y>
+        <width>181</width>
         <height>32</height>
        </rect>
       </property>
@@ -113,9 +113,9 @@
      <widget class="QPushButton" name="pbDisconnect">
       <property name="geometry">
        <rect>
-        <x>70</x>
-        <y>300</y>
-        <width>151</width>
+        <x>60</x>
+        <y>350</y>
+        <width>181</width>
         <height>32</height>
        </rect>
       </property>
@@ -140,7 +140,7 @@
       <property name="geometry">
        <rect>
         <x>35</x>
-        <y>60</y>
+        <y>80</y>
         <width>191</width>
         <height>286</height>
        </rect>
@@ -153,12 +153,18 @@
         <rect>
          <x>25</x>
          <y>35</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
        <property name="text">
         <string>A</string>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>31</width>
+         <height>31</height>
+        </size>
        </property>
       </widget>
       <widget class="QCheckBox" name="chkSDIO_B">
@@ -166,7 +172,7 @@
         <rect>
          <x>25</x>
          <y>65</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -179,7 +185,7 @@
         <rect>
          <x>25</x>
          <y>95</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -192,7 +198,7 @@
         <rect>
          <x>25</x>
          <y>125</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -205,7 +211,7 @@
         <rect>
          <x>25</x>
          <y>155</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -218,7 +224,7 @@
         <rect>
          <x>25</x>
          <y>185</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -231,7 +237,7 @@
         <rect>
          <x>25</x>
          <y>215</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -244,7 +250,7 @@
         <rect>
          <x>25</x>
          <y>245</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -257,7 +263,7 @@
         <rect>
          <x>125</x>
          <y>125</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -270,7 +276,7 @@
         <rect>
          <x>125</x>
          <y>245</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -283,7 +289,7 @@
         <rect>
          <x>125</x>
          <y>65</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -296,7 +302,7 @@
         <rect>
          <x>125</x>
          <y>35</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -309,7 +315,7 @@
         <rect>
          <x>125</x>
          <y>185</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -322,7 +328,7 @@
         <rect>
          <x>125</x>
          <y>155</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -335,7 +341,7 @@
         <rect>
          <x>125</x>
          <y>95</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -348,7 +354,7 @@
         <rect>
          <x>125</x>
          <y>215</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -360,9 +366,9 @@
      <widget class="QGroupBox" name="gbDigitalIn">
       <property name="geometry">
        <rect>
-        <x>280</x>
-        <y>60</y>
-        <width>121</width>
+        <x>300</x>
+        <y>80</y>
+        <width>166</width>
         <height>286</height>
        </rect>
       </property>
@@ -377,7 +383,7 @@
         <rect>
          <x>20</x>
          <y>35</y>
-         <width>81</width>
+         <width>126</width>
          <height>20</height>
         </rect>
        </property>
@@ -460,7 +466,7 @@
         <rect>
          <x>20</x>
          <y>65</y>
-         <width>71</width>
+         <width>126</width>
          <height>20</height>
         </rect>
        </property>
@@ -516,7 +522,7 @@
         <rect>
          <x>20</x>
          <y>155</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -569,7 +575,7 @@
         <rect>
          <x>20</x>
          <y>185</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -622,7 +628,7 @@
         <rect>
          <x>20</x>
          <y>125</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -675,7 +681,7 @@
         <rect>
          <x>20</x>
          <y>215</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -728,7 +734,7 @@
         <rect>
          <x>20</x>
          <y>95</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -781,7 +787,7 @@
         <rect>
          <x>20</x>
          <y>245</y>
-         <width>41</width>
+         <width>50</width>
          <height>20</height>
         </rect>
        </property>
@@ -938,9 +944,9 @@
      <widget class="QPushButton" name="pbTrigHigh">
       <property name="geometry">
        <rect>
-        <x>475</x>
-        <y>90</y>
-        <width>156</width>
+        <x>525</x>
+        <y>100</y>
+        <width>221</width>
         <height>32</height>
        </rect>
       </property>
@@ -951,9 +957,9 @@
      <widget class="QPushButton" name="pbTrigLow">
       <property name="geometry">
        <rect>
-        <x>475</x>
-        <y>165</y>
-        <width>156</width>
+        <x>525</x>
+        <y>175</y>
+        <width>221</width>
         <height>32</height>
        </rect>
       </property>
@@ -964,9 +970,9 @@
      <widget class="QPushButton" name="pbTrigPulse">
       <property name="geometry">
        <rect>
-        <x>475</x>
-        <y>240</y>
-        <width>156</width>
+        <x>525</x>
+        <y>250</y>
+        <width>216</width>
         <height>32</height>
        </rect>
       </property>
@@ -977,9 +983,9 @@
      <widget class="QPushButton" name="pbDIOupdate">
       <property name="geometry">
        <rect>
-        <x>475</x>
-        <y>315</y>
-        <width>156</width>
+        <x>525</x>
+        <y>325</y>
+        <width>216</width>
         <height>32</height>
        </rect>
       </property>
@@ -998,20 +1004,20 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>25</x>
-        <y>5</y>
-        <width>226</width>
-        <height>396</height>
+        <x>15</x>
+        <y>30</y>
+        <width>276</width>
+        <height>426</height>
        </rect>
       </property>
       <property name="title">
-       <string>DC bias channels 1 through 8</string>
+       <string>DC bias channels 1 to 8</string>
       </property>
       <widget class="QLineEdit" name="leSDCB_1">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>50</y>
+         <x>70</x>
+         <y>60</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1020,8 +1026,8 @@
       <widget class="QLineEdit" name="leSDCB_2">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>80</y>
+         <x>70</x>
+         <y>90</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1030,8 +1036,8 @@
       <widget class="QLineEdit" name="leSDCB_3">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>110</y>
+         <x>70</x>
+         <y>120</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1040,8 +1046,8 @@
       <widget class="QLineEdit" name="leSDCB_4">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>140</y>
+         <x>70</x>
+         <y>150</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1050,8 +1056,8 @@
       <widget class="QLineEdit" name="leSDCB_5">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>170</y>
+         <x>70</x>
+         <y>180</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1060,8 +1066,8 @@
       <widget class="QLineEdit" name="leSDCB_6">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>200</y>
+         <x>70</x>
+         <y>210</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1070,8 +1076,8 @@
       <widget class="QLineEdit" name="leSDCB_7">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>230</y>
+         <x>70</x>
+         <y>240</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1080,8 +1086,8 @@
       <widget class="QLineEdit" name="leSDCB_8">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>260</y>
+         <x>70</x>
+         <y>270</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1090,8 +1096,8 @@
       <widget class="QLineEdit" name="leGDCBV_1">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>50</y>
+         <x>175</x>
+         <y>60</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1103,8 +1109,8 @@
       <widget class="QLineEdit" name="leGDCBV_2">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>80</y>
+         <x>175</x>
+         <y>90</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1116,8 +1122,8 @@
       <widget class="QLineEdit" name="leGDCBV_3">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>110</y>
+         <x>175</x>
+         <y>120</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1129,8 +1135,8 @@
       <widget class="QLineEdit" name="leGDCBV_4">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>140</y>
+         <x>175</x>
+         <y>150</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1142,8 +1148,8 @@
       <widget class="QLineEdit" name="leGDCBV_5">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>170</y>
+         <x>175</x>
+         <y>180</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1155,8 +1161,8 @@
       <widget class="QLineEdit" name="leGDCBV_6">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>200</y>
+         <x>175</x>
+         <y>210</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1168,8 +1174,8 @@
       <widget class="QLineEdit" name="leGDCBV_7">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>230</y>
+         <x>175</x>
+         <y>240</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1181,8 +1187,8 @@
       <widget class="QLineEdit" name="leGDCBV_8">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>260</y>
+         <x>175</x>
+         <y>270</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1195,9 +1201,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>55</y>
-         <width>36</width>
-         <height>16</height>
+         <y>60</y>
+         <width>50</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1208,9 +1214,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>85</y>
-         <width>36</width>
-         <height>16</height>
+         <y>90</y>
+         <width>50</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1221,9 +1227,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>115</y>
-         <width>36</width>
-         <height>16</height>
+         <y>120</y>
+         <width>50</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1234,9 +1240,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>145</y>
-         <width>36</width>
-         <height>16</height>
+         <y>150</y>
+         <width>50</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1247,9 +1253,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>175</y>
-         <width>36</width>
-         <height>16</height>
+         <y>180</y>
+         <width>50</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1260,9 +1266,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>200</y>
-         <width>36</width>
-         <height>16</height>
+         <y>210</y>
+         <width>50</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1273,9 +1279,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>230</y>
-         <width>36</width>
-         <height>16</height>
+         <y>240</y>
+         <width>50</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1286,9 +1292,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>260</y>
-         <width>36</width>
-         <height>16</height>
+         <y>270</y>
+         <width>50</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1298,10 +1304,10 @@
       <widget class="QLabel" name="label_9">
        <property name="geometry">
         <rect>
-         <x>55</x>
+         <x>65</x>
          <y>30</y>
-         <width>61</width>
-         <height>16</height>
+         <width>96</width>
+         <height>26</height>
         </rect>
        </property>
        <property name="text">
@@ -1311,10 +1317,10 @@
       <widget class="QLabel" name="label_10">
        <property name="geometry">
         <rect>
-         <x>135</x>
+         <x>175</x>
          <y>30</y>
-         <width>71</width>
-         <height>16</height>
+         <width>106</width>
+         <height>26</height>
         </rect>
        </property>
        <property name="text">
@@ -1325,9 +1331,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>315</y>
-         <width>146</width>
-         <height>16</height>
+         <y>335</y>
+         <width>231</width>
+         <height>26</height>
         </rect>
        </property>
        <property name="text">
@@ -1338,9 +1344,9 @@
        <property name="geometry">
         <rect>
          <x>30</x>
-         <y>345</y>
-         <width>71</width>
-         <height>16</height>
+         <y>365</y>
+         <width>96</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1351,9 +1357,9 @@
        <property name="geometry">
         <rect>
          <x>30</x>
-         <y>365</y>
-         <width>71</width>
-         <height>16</height>
+         <y>390</y>
+         <width>96</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1363,8 +1369,8 @@
       <widget class="QLineEdit" name="leGDCMIN_1">
        <property name="geometry">
         <rect>
-         <x>110</x>
-         <y>340</y>
+         <x>135</x>
+         <y>365</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1376,8 +1382,8 @@
       <widget class="QLineEdit" name="leGDCMAX_1">
        <property name="geometry">
         <rect>
-         <x>110</x>
-         <y>365</y>
+         <x>135</x>
+         <y>390</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1389,8 +1395,8 @@
       <widget class="QLineEdit" name="leSDCBOF_1">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>290</y>
+         <x>70</x>
+         <y>300</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1400,9 +1406,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>290</y>
-         <width>41</width>
-         <height>16</height>
+         <y>300</y>
+         <width>61</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1413,8 +1419,8 @@
      <widget class="QPushButton" name="pbDCbiasUpdate">
       <property name="geometry">
        <rect>
-        <x>555</x>
-        <y>365</y>
+        <x>620</x>
+        <y>360</y>
         <width>121</width>
         <height>32</height>
        </rect>
@@ -1429,20 +1435,20 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>310</x>
-        <y>5</y>
-        <width>226</width>
-        <height>396</height>
+        <x>320</x>
+        <y>30</y>
+        <width>276</width>
+        <height>426</height>
        </rect>
       </property>
       <property name="title">
-       <string>DC bias channels 9 through 16</string>
+       <string>DC bias channels 9 to 16</string>
       </property>
       <widget class="QLineEdit" name="leSDCB_9">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>50</y>
+         <x>70</x>
+         <y>60</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1451,8 +1457,8 @@
       <widget class="QLineEdit" name="leSDCB_10">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>80</y>
+         <x>70</x>
+         <y>90</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1461,8 +1467,8 @@
       <widget class="QLineEdit" name="leSDCB_11">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>110</y>
+         <x>70</x>
+         <y>120</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1471,8 +1477,8 @@
       <widget class="QLineEdit" name="leSDCB_12">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>140</y>
+         <x>70</x>
+         <y>150</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1481,8 +1487,8 @@
       <widget class="QLineEdit" name="leSDCB_13">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>170</y>
+         <x>70</x>
+         <y>180</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1491,8 +1497,8 @@
       <widget class="QLineEdit" name="leSDCB_14">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>200</y>
+         <x>70</x>
+         <y>210</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1501,8 +1507,8 @@
       <widget class="QLineEdit" name="leSDCB_15">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>230</y>
+         <x>70</x>
+         <y>240</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1511,8 +1517,8 @@
       <widget class="QLineEdit" name="leSDCB_16">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>260</y>
+         <x>70</x>
+         <y>270</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1521,8 +1527,8 @@
       <widget class="QLineEdit" name="leGDCBV_9">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>50</y>
+         <x>175</x>
+         <y>60</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1534,8 +1540,8 @@
       <widget class="QLineEdit" name="leGDCBV_10">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>80</y>
+         <x>175</x>
+         <y>90</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1547,8 +1553,8 @@
       <widget class="QLineEdit" name="leGDCBV_11">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>110</y>
+         <x>175</x>
+         <y>120</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1560,8 +1566,8 @@
       <widget class="QLineEdit" name="leGDCBV_12">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>140</y>
+         <x>175</x>
+         <y>150</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1573,8 +1579,8 @@
       <widget class="QLineEdit" name="leGDCBV_13">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>170</y>
+         <x>175</x>
+         <y>180</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1586,8 +1592,8 @@
       <widget class="QLineEdit" name="leGDCBV_14">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>200</y>
+         <x>175</x>
+         <y>210</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1599,8 +1605,8 @@
       <widget class="QLineEdit" name="leGDCBV_15">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>230</y>
+         <x>175</x>
+         <y>240</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1612,8 +1618,8 @@
       <widget class="QLineEdit" name="leGDCBV_16">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>260</y>
+         <x>175</x>
+         <y>270</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1626,9 +1632,9 @@
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>55</y>
-         <width>36</width>
-         <height>16</height>
+         <y>60</y>
+         <width>60</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1639,9 +1645,9 @@
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>85</y>
-         <width>41</width>
-         <height>16</height>
+         <y>90</y>
+         <width>60</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1652,9 +1658,9 @@
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>115</y>
-         <width>41</width>
-         <height>16</height>
+         <y>120</y>
+         <width>60</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1665,9 +1671,9 @@
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>145</y>
-         <width>41</width>
-         <height>16</height>
+         <y>150</y>
+         <width>60</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1678,9 +1684,9 @@
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>175</y>
-         <width>41</width>
-         <height>16</height>
+         <y>180</y>
+         <width>60</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1691,9 +1697,9 @@
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>200</y>
-         <width>41</width>
-         <height>16</height>
+         <y>210</y>
+         <width>60</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1704,9 +1710,9 @@
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>230</y>
-         <width>41</width>
-         <height>16</height>
+         <y>240</y>
+         <width>60</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1717,9 +1723,9 @@
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>260</y>
-         <width>41</width>
-         <height>16</height>
+         <y>270</y>
+         <width>60</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1729,10 +1735,10 @@
       <widget class="QLabel" name="label_23">
        <property name="geometry">
         <rect>
-         <x>55</x>
+         <x>70</x>
          <y>30</y>
-         <width>61</width>
-         <height>16</height>
+         <width>96</width>
+         <height>26</height>
         </rect>
        </property>
        <property name="text">
@@ -1742,10 +1748,10 @@
       <widget class="QLabel" name="label_24">
        <property name="geometry">
         <rect>
-         <x>135</x>
+         <x>175</x>
          <y>30</y>
-         <width>71</width>
-         <height>16</height>
+         <width>101</width>
+         <height>26</height>
         </rect>
        </property>
        <property name="text">
@@ -1756,9 +1762,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>315</y>
-         <width>146</width>
-         <height>16</height>
+         <y>330</y>
+         <width>221</width>
+         <height>26</height>
         </rect>
        </property>
        <property name="text">
@@ -1769,9 +1775,9 @@
        <property name="geometry">
         <rect>
          <x>30</x>
-         <y>345</y>
-         <width>71</width>
-         <height>16</height>
+         <y>365</y>
+         <width>101</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1782,9 +1788,9 @@
        <property name="geometry">
         <rect>
          <x>30</x>
-         <y>365</y>
-         <width>71</width>
-         <height>16</height>
+         <y>385</y>
+         <width>106</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
@@ -1794,8 +1800,8 @@
       <widget class="QLineEdit" name="leGDCMIN_9">
        <property name="geometry">
         <rect>
-         <x>110</x>
-         <y>340</y>
+         <x>135</x>
+         <y>360</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1807,8 +1813,8 @@
       <widget class="QLineEdit" name="leGDCMAX_9">
        <property name="geometry">
         <rect>
-         <x>110</x>
-         <y>365</y>
+         <x>135</x>
+         <y>385</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1820,8 +1826,8 @@
       <widget class="QLineEdit" name="leSDCBOF_9">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>290</y>
+         <x>70</x>
+         <y>300</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1830,10 +1836,10 @@
       <widget class="QLabel" name="label_28">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>290</y>
-         <width>41</width>
-         <height>16</height>
+         <x>5</x>
+         <y>300</y>
+         <width>66</width>
+         <height>21</height>
         </rect>
        </property>
        <property name="text">
@@ -1844,11 +1850,14 @@
      <widget class="QLineEdit" name="leGCHAN_DCB">
       <property name="geometry">
        <rect>
-        <x>615</x>
-        <y>50</y>
+        <x>690</x>
+        <y>85</y>
         <width>71</width>
         <height>21</height>
        </rect>
+      </property>
+      <property name="text">
+       <string/>
       </property>
       <property name="readOnly">
        <bool>true</bool>
@@ -1857,10 +1866,10 @@
      <widget class="QLabel" name="label_29">
       <property name="geometry">
        <rect>
-        <x>560</x>
+        <x>605</x>
         <y>30</y>
-        <width>106</width>
-        <height>31</height>
+        <width>176</width>
+        <height>46</height>
        </rect>
       </property>
       <property name="text">
@@ -1873,10 +1882,10 @@
      <widget class="QCheckBox" name="chkPowerEnable">
       <property name="geometry">
        <rect>
-        <x>560</x>
-        <y>95</y>
-        <width>116</width>
-        <height>41</height>
+        <x>615</x>
+        <y>120</y>
+        <width>161</width>
+        <height>51</height>
        </rect>
       </property>
       <property name="text">
@@ -1893,9 +1902,9 @@ enabled</string>
       <property name="geometry">
        <rect>
         <x>65</x>
-        <y>30</y>
-        <width>116</width>
-        <height>16</height>
+        <y>20</y>
+        <width>196</width>
+        <height>31</height>
        </rect>
       </property>
       <property name="text">
@@ -1905,7 +1914,7 @@ enabled</string>
      <widget class="QComboBox" name="comboRFchan">
       <property name="geometry">
        <rect>
-        <x>180</x>
+        <x>245</x>
         <y>25</y>
         <width>106</width>
         <height>26</height>
@@ -1915,9 +1924,9 @@ enabled</string>
      <widget class="QGroupBox" name="groupBox">
       <property name="geometry">
        <rect>
-        <x>145</x>
-        <y>75</y>
-        <width>386</width>
+        <x>190</x>
+        <y>95</y>
+        <width>411</width>
         <height>246</height>
        </rect>
       </property>
@@ -1928,9 +1937,9 @@ enabled</string>
        <property name="geometry">
         <rect>
          <x>65</x>
-         <y>70</y>
-         <width>96</width>
-         <height>16</height>
+         <y>65</y>
+         <width>151</width>
+         <height>26</height>
         </rect>
        </property>
        <property name="text">
@@ -1942,8 +1951,8 @@ enabled</string>
         <rect>
          <x>65</x>
          <y>100</y>
-         <width>96</width>
-         <height>16</height>
+         <width>126</width>
+         <height>26</height>
         </rect>
        </property>
        <property name="text">
@@ -1954,9 +1963,9 @@ enabled</string>
        <property name="geometry">
         <rect>
          <x>65</x>
-         <y>130</y>
-         <width>116</width>
-         <height>16</height>
+         <y>135</y>
+         <width>176</width>
+         <height>26</height>
         </rect>
        </property>
        <property name="text">
@@ -1967,9 +1976,9 @@ enabled</string>
        <property name="geometry">
         <rect>
          <x>65</x>
-         <y>160</y>
-         <width>116</width>
-         <height>16</height>
+         <y>170</y>
+         <width>171</width>
+         <height>26</height>
         </rect>
        </property>
        <property name="text">
@@ -1979,7 +1988,7 @@ enabled</string>
       <widget class="QLineEdit" name="leSRFFRQ">
        <property name="geometry">
         <rect>
-         <x>195</x>
+         <x>240</x>
          <y>70</y>
          <width>113</width>
          <height>21</height>
@@ -1989,8 +1998,8 @@ enabled</string>
       <widget class="QLineEdit" name="leSRFDRV">
        <property name="geometry">
         <rect>
-         <x>195</x>
-         <y>100</y>
+         <x>240</x>
+         <y>105</y>
          <width>113</width>
          <height>21</height>
         </rect>
@@ -1999,8 +2008,8 @@ enabled</string>
       <widget class="QLineEdit" name="leGRFPPVP">
        <property name="geometry">
         <rect>
-         <x>195</x>
-         <y>130</y>
+         <x>240</x>
+         <y>140</y>
          <width>113</width>
          <height>21</height>
         </rect>
@@ -2012,8 +2021,8 @@ enabled</string>
       <widget class="QLineEdit" name="leGRFPPVN">
        <property name="geometry">
         <rect>
-         <x>195</x>
-         <y>160</y>
+         <x>240</x>
+         <y>175</y>
          <width>113</width>
          <height>21</height>
         </rect>
@@ -2026,8 +2035,8 @@ enabled</string>
      <widget class="QPushButton" name="pbUpdateRF">
       <property name="geometry">
        <rect>
-        <x>535</x>
-        <y>360</y>
+        <x>640</x>
+        <y>370</y>
         <width>113</width>
         <height>32</height>
        </rect>
@@ -2045,8 +2054,8 @@ enabled</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>0</y>
-        <width>681</width>
+        <y>10</y>
+        <width>776</width>
         <height>76</height>
        </rect>
       </property>
@@ -2072,7 +2081,7 @@ enabled</string>
       <widget class="QPushButton" name="pbEditCurrent">
        <property name="geometry">
         <rect>
-         <x>180</x>
+         <x>210</x>
          <y>30</y>
          <width>151</width>
          <height>32</height>
@@ -2088,7 +2097,7 @@ enabled</string>
       <widget class="QPushButton" name="pbCreateNew">
        <property name="geometry">
         <rect>
-         <x>350</x>
+         <x>415</x>
          <y>30</y>
          <width>151</width>
          <height>32</height>
@@ -2104,7 +2113,7 @@ enabled</string>
       <widget class="QPushButton" name="pbSaveToFile">
        <property name="geometry">
         <rect>
-         <x>520</x>
+         <x>610</x>
          <y>30</y>
          <width>151</width>
          <height>32</height>
@@ -2122,8 +2131,8 @@ enabled</string>
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>90</y>
-        <width>681</width>
+        <y>110</y>
+        <width>771</width>
         <height>106</height>
        </rect>
       </property>
@@ -2133,7 +2142,7 @@ enabled</string>
       <widget class="QComboBox" name="comboClock">
        <property name="geometry">
         <rect>
-         <x>70</x>
+         <x>120</x>
          <y>35</y>
          <width>141</width>
          <height>26</height>
@@ -2144,9 +2153,9 @@ enabled</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>40</y>
+         <y>35</y>
          <width>61</width>
-         <height>16</height>
+         <height>26</height>
         </rect>
        </property>
        <property name="text">
@@ -2157,9 +2166,9 @@ enabled</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>70</y>
-         <width>61</width>
-         <height>16</height>
+         <y>60</y>
+         <width>86</width>
+         <height>31</height>
         </rect>
        </property>
        <property name="text">
@@ -2169,7 +2178,7 @@ enabled</string>
       <widget class="QComboBox" name="comboTrigger">
        <property name="geometry">
         <rect>
-         <x>70</x>
+         <x>120</x>
          <y>65</y>
          <width>141</width>
          <height>26</height>
@@ -2179,10 +2188,10 @@ enabled</string>
       <widget class="QLabel" name="label_32">
        <property name="geometry">
         <rect>
-         <x>385</x>
-         <y>40</y>
-         <width>166</width>
-         <height>16</height>
+         <x>380</x>
+         <y>30</y>
+         <width>236</width>
+         <height>26</height>
         </rect>
        </property>
        <property name="text">
@@ -2192,7 +2201,7 @@ enabled</string>
       <widget class="QLineEdit" name="leExternClock">
        <property name="geometry">
         <rect>
-         <x>550</x>
+         <x>625</x>
          <y>35</y>
          <width>113</width>
          <height>21</height>
@@ -2207,8 +2216,8 @@ enabled</string>
       <property name="geometry">
        <rect>
         <x>15</x>
-        <y>370</y>
-        <width>151</width>
+        <y>410</y>
+        <width>200</width>
         <height>32</height>
        </rect>
       </property>
@@ -2222,9 +2231,9 @@ enabled</string>
      <widget class="QPushButton" name="pbViewTable">
       <property name="geometry">
        <rect>
-        <x>265</x>
-        <y>370</y>
-        <width>166</width>
+        <x>290</x>
+        <y>410</y>
+        <width>211</width>
         <height>32</height>
        </rect>
       </property>
@@ -2235,9 +2244,9 @@ enabled</string>
      <widget class="QPushButton" name="pbTrigger">
       <property name="geometry">
        <rect>
-        <x>530</x>
-        <y>370</y>
-        <width>151</width>
+        <x>570</x>
+        <y>410</y>
+        <width>200</width>
         <height>32</height>
        </rect>
       </property>
@@ -2248,10 +2257,10 @@ enabled</string>
      <widget class="QLabel" name="label_33">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>230</y>
-        <width>121</width>
-        <height>36</height>
+        <x>15</x>
+        <y>245</y>
+        <width>176</width>
+        <height>61</height>
        </rect>
       </property>
       <property name="text">
@@ -2264,8 +2273,8 @@ enabled</string>
      <widget class="QLineEdit" name="leSequenceNumber">
       <property name="geometry">
        <rect>
-        <x>160</x>
-        <y>235</y>
+        <x>205</x>
+        <y>265</y>
         <width>76</width>
         <height>21</height>
        </rect>
@@ -2278,8 +2287,8 @@ enabled</string>
       <property name="geometry">
        <rect>
         <x>40</x>
-        <y>290</y>
-        <width>181</width>
+        <y>320</y>
+        <width>281</width>
         <height>46</height>
        </rect>
       </property>
@@ -2291,9 +2300,9 @@ number on each trigger</string>
      <widget class="QGroupBox" name="groupBox_4">
       <property name="geometry">
        <rect>
-        <x>305</x>
-        <y>210</y>
-        <width>371</width>
+        <x>340</x>
+        <y>240</y>
+        <width>436</width>
         <height>131</height>
        </rect>
       </property>
@@ -2304,9 +2313,9 @@ number on each trigger</string>
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>35</y>
-         <width>121</width>
-         <height>16</height>
+         <y>30</y>
+         <width>176</width>
+         <height>26</height>
         </rect>
        </property>
        <property name="text">
@@ -2317,9 +2326,9 @@ number on each trigger</string>
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>65</y>
-         <width>101</width>
-         <height>16</height>
+         <y>60</y>
+         <width>121</width>
+         <height>26</height>
         </rect>
        </property>
        <property name="text">
@@ -2330,9 +2339,9 @@ number on each trigger</string>
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>95</y>
+         <y>90</y>
          <width>96</width>
-         <height>16</height>
+         <height>26</height>
         </rect>
        </property>
        <property name="text">
@@ -2342,8 +2351,8 @@ number on each trigger</string>
       <widget class="QLineEdit" name="leTimePoint">
        <property name="geometry">
         <rect>
-         <x>140</x>
-         <y>30</y>
+         <x>205</x>
+         <y>35</y>
          <width>76</width>
          <height>21</height>
         </rect>
@@ -2355,8 +2364,8 @@ number on each trigger</string>
       <widget class="QLineEdit" name="leChannel">
        <property name="geometry">
         <rect>
-         <x>140</x>
-         <y>60</y>
+         <x>205</x>
+         <y>65</y>
          <width>76</width>
          <height>21</height>
         </rect>
@@ -2368,8 +2377,8 @@ number on each trigger</string>
       <widget class="QLineEdit" name="leValue">
        <property name="geometry">
         <rect>
-         <x>140</x>
-         <y>90</y>
+         <x>205</x>
+         <y>95</y>
          <width>76</width>
          <height>21</height>
         </rect>
@@ -2381,7 +2390,7 @@ number on each trigger</string>
       <widget class="QPushButton" name="pbRead">
        <property name="geometry">
         <rect>
-         <x>245</x>
+         <x>310</x>
          <y>40</y>
          <width>111</width>
          <height>32</height>
@@ -2394,7 +2403,7 @@ number on each trigger</string>
       <widget class="QPushButton" name="pbWrite">
        <property name="geometry">
         <rect>
-         <x>245</x>
+         <x>310</x>
          <y>80</y>
          <width>111</width>
          <height>32</height>
@@ -2413,7 +2422,7 @@ number on each trigger</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>699</width>
+     <width>797</width>
      <height>22</height>
     </rect>
    </property>
@@ -2437,9 +2446,16 @@ number on each trigger</string>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
    </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionProgram_MIPS"/>
+   </widget>
    <addaction name="menuAbout"/>
    <addaction name="menuFile"/>
    <addaction name="menuTerminal"/>
+   <addaction name="menuTools"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -2468,6 +2484,11 @@ number on each trigger</string>
   <action name="actionSave">
    <property name="text">
     <string>Save</string>
+   </property>
+  </action>
+  <action name="actionProgram_MIPS">
+   <property name="text">
+    <string>Program MIPS</string>
    </property>
   </action>
  </widget>

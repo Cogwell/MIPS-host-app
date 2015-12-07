@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MIPS, Version 1.2 July 12, 2015</string>
+   <string>MIPS, Version 1.2 December 7, 2015</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QTabWidget" name="tabMIPS">
@@ -65,8 +65,8 @@
      <widget class="QLabel" name="lblMIPSconfig">
       <property name="geometry">
        <rect>
-        <x>405</x>
-        <y>85</y>
+        <x>410</x>
+        <y>100</y>
         <width>331</width>
         <height>331</height>
        </rect>
@@ -98,7 +98,7 @@
       <property name="geometry">
        <rect>
         <x>60</x>
-        <y>205</y>
+        <y>170</y>
         <width>181</width>
         <height>32</height>
        </rect>
@@ -107,7 +107,7 @@
        <string>Press this button to configure the serial port before connecting to MIPS.</string>
       </property>
       <property name="text">
-       <string>Configurate port</string>
+       <string>Configure port</string>
       </property>
      </widget>
      <widget class="QPushButton" name="pbDisconnect">
@@ -126,6 +126,67 @@
        <string>Disconnect</string>
       </property>
      </widget>
+     <widget class="QLineEdit" name="leMIPSnetName">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>230</y>
+        <width>161</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Network name or IP address of MIPS host, leave blank to use serial port.</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lblMIPSconfigTitle_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>230</y>
+        <width>241</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>MIPS host name</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lblMIPSconnectionNotes">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>70</y>
+        <width>431</width>
+        <height>311</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>18</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="midLineWidth">
+       <number>0</number>
+      </property>
+      <property name="text">
+       <string>MIPS is currently not connected to this application. To connect; select a serial port using the Configure port button provided or enter a network connected MIPS host name. If using the serial port connection make sure the MIPS host name box is empty. If a name is entered in the MIPS host name box this application assumes you wish to make a network connection.Please note, the Program MIPS function will only work with a serial connection to a MIPS system.</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <zorder>lblMIPSconfigTitle_2</zorder>
+     <zorder>lblMIPSimage</zorder>
+     <zorder>lblMIPSconfigTitle</zorder>
+     <zorder>lblMIPSconfig</zorder>
+     <zorder>pbConnect</zorder>
+     <zorder>pbConfigure</zorder>
+     <zorder>pbDisconnect</zorder>
+     <zorder>leMIPSnetName</zorder>
+     <zorder>lblMIPSconnectionNotes</zorder>
     </widget>
     <widget class="QWidget" name="Terminal">
      <attribute name="title">

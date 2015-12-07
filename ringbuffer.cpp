@@ -20,7 +20,7 @@ void RingBuffer::waitforline(int timeout = 0)
 {
     QTime timer;
 
-    if(timeout ==0)
+    if(timeout == 0)
     {
         while(1)
         {
@@ -33,7 +33,10 @@ void RingBuffer::waitforline(int timeout = 0)
     while(timer.elapsed() < timeout)
     {
         QApplication::processEvents();
-        if(lines > 0) break;
+        if(lines > 0)
+        {
+            break;
+        }
     }
 }
 

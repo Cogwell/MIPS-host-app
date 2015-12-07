@@ -74,7 +74,6 @@ void Console::keyPressEvent(QKeyEvent *e)
 {
     QClipboard *clipboard = QApplication::clipboard();
 
-//    qDebug() << e->modifiers();
    switch (e->key())
    {
         case Qt::Key_Backspace:

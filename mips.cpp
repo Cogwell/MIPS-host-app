@@ -27,8 +27,15 @@
 //      1.) Fixed the bugs in the firmware download feature.
 //      2.) Tested on MAC and PC
 //      3.) Updated a lot of screen issues from PC to MAC. Most features tested.
+//  1.3, November 30, 2015
+//      1.) Added socket support for networked MIPS.
 //
 //  To do list:
+//  1.) Refactor the code, here are some to dos:
+//      a.) Split psePoint out to its own file
+//      b.) Add the build table code to the psePoint class
+//      c.) Create a class to communicate with the MIPS system
+
 //
 #include "mips.h"
 #include "ui_mips.h"
@@ -50,6 +57,8 @@
 #include <QDir>
 #include <QProcess>
 #include <QFileInfo>
+#include "qtcpsocket.h"
+
 
 RingBuffer rb;
 
@@ -75,7 +84,7 @@ MIPS::MIPS(QWidget *parent) :
     ui->actionSave->setEnabled(true);
     ui->actionProgram_MIPS->setEnabled(true);
 
-    connect(ui->actionClear, SIGNAL(triggered()), console, SLOT(clear()));
+ //   connect(app, SIGNAL(focusChanged(QWidget*, QWidget*)), this, SLOT(setWidgets(QWidget*, QWidget*)));    connect(ui->actionClear, SIGNAL(triggered()), console, SLOT(clear()));
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(loadSettings()));
     connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(saveSettings()));
     connect(ui->actionProgram_MIPS, SIGNAL(triggered()), this, SLOT(programMIPS()));
@@ -83,8 +92,11 @@ MIPS::MIPS(QWidget *parent) :
     connect(ui->tabMIPS,SIGNAL(currentChanged(int)),this,SLOT(tabSelected()));
     connect(ui->pbConnect,SIGNAL(pressed()),this,SLOT(MIPSconnect()));
     connect(ui->pbDisconnect,SIGNAL(pressed()),this,SLOT(MIPSdisconnect()));
-//    connect(serial, SIGNAL(error(QSerialPort::SerialPortError)), this,SLOT(handleError(QSerialPort::SerialPortError)));
+//  connect(serial, SIGNAL(error(QSerialPort::SerialPortError)), this,SLOT(handleError(QSerialPort::SerialPortError)));
     connect(serial, SIGNAL(readyRead()), this, SLOT(readData2RingBuffer()));
+    connect(&client, SIGNAL(readyRead()), this, SLOT(readData2RingBuffer()));
+    connect(&client, SIGNAL(connected()),this, SLOT(connected()));
+    connect(&client, SIGNAL(disconnected()),this, SLOT(disconnected()));
     connect(pollTimer, SIGNAL(timeout()), this, SLOT(pollLoop()));
     connect(ui->actionAbout,SIGNAL(triggered(bool)), this, SLOT(DisplayAboutMessage()));
     // DCbias page setup
@@ -342,7 +354,7 @@ void MIPS::saveSettings(void)
 void MIPS::pollLoop(void)
 {
     QString res ="";
-    char c;
+    //char c;
 
     if( ui->tabMIPS->tabText(ui->tabMIPS->currentIndex()) == "Pulse Sequence Generation")
     {
@@ -475,7 +487,7 @@ void MIPS::SendCommand(QString message)
 {
     QString res;
 
-    if (!serial->isOpen())
+    if (!serial->isOpen() && !client.isOpen())
     {
         ui->statusBar->showMessage("Disconnected!",2000);
         return;
@@ -483,7 +495,8 @@ void MIPS::SendCommand(QString message)
     for(int i=0;i<2;i++)
     {
         rb.clear();
-        serial->write(message.toStdString().c_str());
+        if (serial->isOpen()) serial->write(message.toStdString().c_str());
+        if (client.isOpen()) client.write(message.toStdString().c_str());
         rb.waitforline(500);
         if(rb.size() >= 1)
         {
@@ -506,7 +519,7 @@ QString MIPS::SendMessage(QString message)
 {
     QString res;
 
-    if (!serial->isOpen())
+    if (!serial->isOpen() && !client.isOpen())
     {
         ui->statusBar->showMessage("Disconnected!",2000);
         return "";
@@ -514,7 +527,8 @@ QString MIPS::SendMessage(QString message)
      for(int i=0;i<2;i++)
     {
         rb.clear();
-        serial->write(message.toStdString().c_str());
+        if (serial->isOpen()) serial->write(message.toStdString().c_str());
+        if (client.isOpen()) client.write(message.toStdString().c_str());
         rb.waitforline(500);
         if(rb.size() >= 1)
         {
@@ -589,20 +603,16 @@ void MIPS::DCbiasPower(void)
 
 void MIPS::MIPSdisconnect(void)
 {
+    if(client.isOpen()) client.close();
     closeSerialPort();
     ui->lblMIPSconfig->setText("");
+    ui->lblMIPSconnectionNotes->setHidden(false);
 }
 
-void MIPS::MIPSconnect(void)
+void MIPS::MIPSsetup(void)
 {
     QString res;
 
-    if (serial->isOpen())
-    {
-        return;
-    }
-    openSerialPort();
-    serial->setDataTerminalReady(true);
     disconnect(ui->comboRFchan, SIGNAL(currentTextChanged(QString)),0,0);
     ui->lblMIPSconfig->setText("MIPS: ");
     res = SendMessage("GVER\n");
@@ -626,9 +636,48 @@ void MIPS::MIPSconnect(void)
     res = SendMessage("GCHAN,FAIMS\n");
     if(res.contains("1")) ui->lblMIPSconfig->setText(ui->lblMIPSconfig->text() + "\n   FAIMS\n");
     res = SendMessage("GCHAN,ESI\n");
-    serial->write("GCHAN,ESI\n");
+    //serial->write("GCHAN,ESI\n");
     if(res.contains("2")) ui->lblMIPSconfig->setText(ui->lblMIPSconfig->text() + "\n   1 ESI\n");
     if(res.contains("4")) ui->lblMIPSconfig->setText(ui->lblMIPSconfig->text() + "\n   2 ESI\n");
+}
+
+// Here when the Connect push button is pressed. This function makes a connection with MIPS.
+// If a network name or IP is provided that connection is tried first.
+// If the serial port of socket is connected then this function exits.
+void MIPS::MIPSconnect(void)
+{
+    QTime timer;
+    QString res;
+
+    if(client.isOpen() || serial->isOpen()) return;
+
+    if(ui->leMIPSnetName->text() != "")
+    {
+       client_connected = false;
+       client.connectToHost(ui->leMIPSnetName->text(), 2015);
+       ui->statusBar->showMessage(tr("Connecting..."));
+       timer.start();
+       while(timer.elapsed() < 10000)
+       {
+           QApplication::processEvents();
+           if(client_connected)
+           {
+               MIPSsetup();
+               ui->lblMIPSconnectionNotes->setHidden(true);
+               return;
+           }
+       }
+       ui->statusBar->showMessage(tr("MIPS failed to connect!"));
+       client.abort();
+       client.close();
+       return;
+    }
+    else
+    {
+       openSerialPort();
+       serial->setDataTerminalReady(true);
+    }
+    MIPSsetup();
 }
 
 void MIPS::tabSelected()
@@ -637,13 +686,17 @@ void MIPS::tabSelected()
     {
         settings->fillPortsInfo();
         disconnect(serial, SIGNAL(readyRead()),0,0);
+        disconnect(&client, SIGNAL(readyRead()),0,0);
         connect(serial, SIGNAL(readyRead()), this, SLOT(readData2RingBuffer()));
+        connect(&client, SIGNAL(readyRead()), this, SLOT(readData2RingBuffer()));
     }
     if( ui->tabMIPS->tabText(ui->tabMIPS->currentIndex()) == "Terminal")
     {
         disconnect(serial, SIGNAL(readyRead()),0,0);
+        disconnect(&client, SIGNAL(readyRead()),0,0);
         disconnect(console, SIGNAL(getData(QByteArray)),0,0);
         connect(serial, SIGNAL(readyRead()), this, SLOT(readData2Console()));
+        connect(&client, SIGNAL(readyRead()), this, SLOT(readData2Console()));
         connect(console, SIGNAL(getData(QByteArray)), this, SLOT(writeData(QByteArray)));
         console->resize(ui->Terminal);
         console->setEnabled(true);
@@ -651,38 +704,50 @@ void MIPS::tabSelected()
     if( ui->tabMIPS->tabText(ui->tabMIPS->currentIndex()) == "Digital IO")
     {
         disconnect(serial, SIGNAL(readyRead()),0,0);
+        disconnect(&client, SIGNAL(readyRead()),0,0);
         connect(serial, SIGNAL(readyRead()), this, SLOT(readData2RingBuffer()));
+        connect(&client, SIGNAL(readyRead()), this, SLOT(readData2RingBuffer()));
         UpdateDIO();
     }
     if( ui->tabMIPS->tabText(ui->tabMIPS->currentIndex()) == "DCbias")
     {
         disconnect(serial, SIGNAL(readyRead()),0,0);
+        disconnect(&client, SIGNAL(readyRead()),0,0);
         connect(serial, SIGNAL(readyRead()), this, SLOT(readData2RingBuffer()));
+        connect(&client, SIGNAL(readyRead()), this, SLOT(readData2RingBuffer()));
         UpdateDCbias();
     }
     if( ui->tabMIPS->tabText(ui->tabMIPS->currentIndex()) == "RFdriver")
     {
         disconnect(serial, SIGNAL(readyRead()),0,0);
+        disconnect(&client, SIGNAL(readyRead()),0,0);
         connect(serial, SIGNAL(readyRead()), this, SLOT(readData2RingBuffer()));
+        connect(&client, SIGNAL(readyRead()), this, SLOT(readData2RingBuffer()));
         connect(ui->comboRFchan,SIGNAL(currentTextChanged(QString)),this,SLOT(UpdateRFdriver()));
         UpdateRFdriver();
     }
     if( ui->tabMIPS->tabText(ui->tabMIPS->currentIndex()) == "Pulse Sequence Generation")
     {
         disconnect(serial, SIGNAL(readyRead()),0,0);
+        disconnect(&client, SIGNAL(readyRead()),0,0);
         connect(serial, SIGNAL(readyRead()), this, SLOT(readData2RingBuffer()));
+        connect(&client, SIGNAL(readyRead()), this, SLOT(readData2RingBuffer()));
         UpdatePSG();
     }
 }
 
 void MIPS::writeData(const QByteArray &data)
 {
-    serial->write(data);
+    if(client.isOpen()) client.write(data);
+    if(serial->isOpen()) serial->write(data);
 }
 
 void MIPS::readData2Console(void)
 {
-    QByteArray data = serial->readAll();
+    QByteArray data;
+
+    if(serial->isOpen()) data = serial->readAll();
+    if(client.isOpen()) data = client.readAll();
     console->putData(data);
 }
 
@@ -690,8 +755,16 @@ void MIPS::readData2RingBuffer(void)
 {
     int i;
 
-    QByteArray data = serial->readAll();
-    for(i=0;i<data.size();i++) rb.putch(data[i]);
+    if(client.isOpen())
+    {
+        QByteArray data = client.readAll();
+        for(i=0;i<data.size();i++) rb.putch(data[i]);
+    }
+    if(serial->isOpen())
+    {
+        QByteArray data = serial->readAll();
+        for(i=0;i<data.size();i++) rb.putch(data[i]);
+    }
 }
 
 void MIPS::openSerialPort()
@@ -816,12 +889,10 @@ void MIPS::UpdateRFdriver(void)
 
     ui->tabMIPS->setEnabled(false);
     ui->statusBar->showMessage(tr("Updating RF driver controls..."));
-
     ui->leSRFFRQ->setText(SendMessage("GRFFRQ," + ui->comboRFchan->currentText() + "\n"));
     ui->leSRFDRV->setText(SendMessage("GRFDRV," + ui->comboRFchan->currentText() + "\n"));
     ui->leGRFPPVP->setText(SendMessage("GRFPPVP," + ui->comboRFchan->currentText() + "\n"));
     ui->leGRFPPVN->setText(SendMessage("GRFPPVN," + ui->comboRFchan->currentText() + "\n"));
-
     ui->tabMIPS->setEnabled(true);
     ui->statusBar->showMessage(tr(""));
 }
@@ -998,12 +1069,16 @@ void MIPS::on_pbTrigger_pressed()
 
 void MIPS::on_leSRFFRQ_editingFinished()
 {
+    if(!ui->leSRFFRQ->isModified()) return;
     SendCommand("SRFFRQ," + ui->comboRFchan->currentText() + "," + ui->leSRFFRQ->text() + "\n");
+    ui->leSRFFRQ->setModified(false);
 }
 
 void MIPS::on_leSRFDRV_editingFinished()
 {
+    if(!ui->leSRFDRV->isModified()) return;
     SendCommand("SRFDRV," + ui->comboRFchan->currentText() + "," + ui->leSRFDRV->text() + "\n");
+    ui->leSRFDRV->setModified(false);
 }
 
 void MIPS::on_pbRead_pressed()
@@ -1015,3 +1090,19 @@ void MIPS::on_pbWrite_pressed()
 {
     SendCommand("STBLVLT," + ui->leTimePoint->text() + "," + ui->leChannel->text() + "," + ui->leValue->text() + "\n");
 }
+
+void MIPS::connected(void)
+{
+    ui->statusBar->showMessage(tr("MIPS connected"));
+    client_connected = true;
+}
+
+void MIPS::disconnected(void)
+{
+    ui->statusBar->showMessage(tr("Disconnected"));
+}
+
+void MIPS::setWidgets(QWidget* old, QWidget* now)
+{
+}
+

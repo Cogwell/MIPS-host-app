@@ -6,12 +6,14 @@
 
 QT       += core gui
 QT       += serialport
+QT       += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = MIPS
 TEMPLATE = app
 
+CONFIG += static
 
 SOURCES += main.cpp\
         mips.cpp \
@@ -32,3 +34,6 @@ FORMS    += mips.ui \
 
 RESOURCES += \
     files.qrc
+
+QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:WINDOWS,5.01
+

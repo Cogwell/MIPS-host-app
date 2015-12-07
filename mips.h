@@ -7,6 +7,8 @@
 #include <QLineEdit>
 #include <QTimer>
 #include <QProcess>
+#include "qtcpsocket.h"
+
 
 namespace Ui {
 class MIPS;
@@ -35,7 +37,9 @@ public:
     void UpdatePSG(void);
 
 private slots:
+    void setWidgets(QWidget*, QWidget*);
     void MIPSconnect(void);
+    void MIPSsetup(void);
     void MIPSdisconnect(void);
     void tabSelected();
     void writeData(const QByteArray &data);
@@ -57,6 +61,8 @@ private slots:
     void DisplayAboutMessage(void);
     void programMIPS(void);
     void readProcessOutput(void);
+    void connected(void);
+    void disconnected(void);
     // These slots automatically connect due to naming convention
     void on_pbDownload_pressed(void);
     void on_pbViewTable_pressed();
@@ -82,6 +88,8 @@ private:
     QList<psgPoint*> psg;
     QProcess process;
     QString  appPath;
+    QTcpSocket client;
+    bool client_connected;
 };
 
 #endif // MIPS_H

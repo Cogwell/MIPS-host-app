@@ -7,7 +7,8 @@
 #include <QLineEdit>
 #include <QTimer>
 #include <QProcess>
-#include "qtcpsocket.h"
+//#include <qtcpsocket.h>
+#include <QtNetwork/QTcpSocket>
 
 
 namespace Ui {
@@ -60,6 +61,9 @@ private slots:
     void saveSettings(void);
     void DisplayAboutMessage(void);
     void programMIPS(void);
+    void executeProgrammerCommand(QString cmd);
+    void setBootloaderBootBit(void);
+    void saveMIPSfirmware(void);
     void readProcessOutput(void);
     void connected(void);
     void disconnected(void);

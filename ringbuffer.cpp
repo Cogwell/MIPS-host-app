@@ -52,7 +52,7 @@ char RingBuffer::getch(void)
     if(count == 0) return(0);
     c = buffer[tail++];
     if(tail >= SIZE) tail = 0;
-    count++;
+    count--;
     if(c == '\n')
     {
         lines--;

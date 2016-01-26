@@ -29,6 +29,8 @@
 //      3.) Updated a lot of screen issues from PC to MAC. Most features tested.
 //  1.3, November 30, 2015
 //      1.) Added socket support for networked MIPS.
+//  1.4, January 10, 2016
+//      1.) Added MIPS firmware save and boot bit setting functions
 //
 //  To do list:
 //  1.) Refactor the code, here are some to dos:
@@ -57,7 +59,9 @@
 #include <QDir>
 #include <QProcess>
 #include <QFileInfo>
-#include "qtcpsocket.h"
+//#include "qtcpsocket.h"
+//#include <QTcpSocket>
+#include <QtNetwork/QTcpSocket>
 
 
 RingBuffer rb;
@@ -70,7 +74,12 @@ MIPS::MIPS(QWidget *parent) :
     // Make the dialog fixed size.
     this->setFixedSize(this->size());
 
-//  MIPS::setProperty("font", QFont("Times New Roman", 5));
+//  MIPS::setProperty("font", QFont("Times New Roman", 16));
+    #if defined(Q_OS_MAC)
+    QFont font = ui->lblMIPSconnectionNotes->font();
+    font.setPointSize(21);
+    ui->lblMIPSconnectionNotes->setFont(font);
+    #endif
 
     appPath = QApplication::applicationDirPath();
     pollTimer = new QTimer;
@@ -83,11 +92,15 @@ MIPS::MIPS(QWidget *parent) :
     ui->actionOpen->setEnabled(true);
     ui->actionSave->setEnabled(true);
     ui->actionProgram_MIPS->setEnabled(true);
+    ui->actionSave_current_MIPS_firmware->setEnabled(true);
+    ui->actionSet_bootloader_boot_flag->setEnabled(true);
 
  //   connect(app, SIGNAL(focusChanged(QWidget*, QWidget*)), this, SLOT(setWidgets(QWidget*, QWidget*)));    connect(ui->actionClear, SIGNAL(triggered()), console, SLOT(clear()));
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(loadSettings()));
     connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(saveSettings()));
     connect(ui->actionProgram_MIPS, SIGNAL(triggered()), this, SLOT(programMIPS()));
+    connect(ui->actionSave_current_MIPS_firmware, SIGNAL(triggered()), this, SLOT(saveMIPSfirmware()));
+    connect(ui->actionSet_bootloader_boot_flag, SIGNAL(triggered()), this, SLOT(setBootloaderBootBit()));
     connect(ui->pbConfigure, SIGNAL(pressed()), settings, SLOT(show()));
     connect(ui->tabMIPS,SIGNAL(currentChanged(int)),this,SLOT(tabSelected()));
     connect(ui->pbConnect,SIGNAL(pressed()),this,SLOT(MIPSconnect()));
@@ -163,6 +176,134 @@ MIPS::~MIPS()
     delete ui;
 }
 
+
+// This function ic called by the MIPS firmware save or write function. The cmd
+// string passed contains the programmer invocation command.
+void MIPS::executeProgrammerCommand(QString cmd)
+{
+    QString pcheck;
+
+    // Select the Terminal tab and clear the display
+    console->clear();
+    // Make sure the app is connected to MIPS
+    if(!serial->isOpen())
+    {
+        console->putData("This application is not connected to MIPS!\n");
+        return;
+    }
+    // Make sure we can locate the programmer tool...
+    #if defined(Q_OS_MAC)
+        pcheck = appPath + "/bossac";
+    #else
+        pcheck = appPath + "/bossac.exe";
+    #endif
+    QFileInfo checkFile(pcheck);
+    if (!checkFile.exists() || !checkFile.isFile())
+    {
+        console->putData("Can't find the programmer!\n");
+        console->putData(cmd.toStdString().c_str());
+        return;
+    }
+    // Enable MIPS's bootloader
+    console->putData("MIPS bootloader enabled!\n");
+    qDebug() << "Bootloader enabled";
+    closeSerialPort();
+    QThread::sleep(1);
+    while(serial->isOpen()) QApplication::processEvents();
+    serial->setBaudRate(QSerialPort::Baud1200);
+    QApplication::processEvents();
+    serial->open(QIODevice::ReadWrite);
+    serial->setDataTerminalReady(false);
+    QThread::sleep(1);
+    serial->close();
+    QApplication::processEvents();
+    QThread::sleep(5);
+    // Perform selected bootloader function and restart MIPS
+    QApplication::processEvents();
+    console->putData(cmd.toStdString().c_str());
+    console->putData("\n");
+    QApplication::processEvents();
+    QStringList arguments;
+    arguments << "-c";
+    arguments << cmd;
+//  arguments << " -h";
+    #if defined(Q_OS_MAC)
+        process.start("/bin/bash",arguments);
+    #else
+        process.start(cmd);
+    #endif
+    console->putData("Operation should start soon...\n");
+    connect(&process,SIGNAL(readyReadStandardOutput()),this,SLOT(readProcessOutput()));
+    connect(&process,SIGNAL(readyReadStandardError()),this,SLOT(readProcessOutput()));
+}
+
+void MIPS::setBootloaderBootBit(void)
+{
+    QString cmd;
+    QString str;
+
+    // Pop up a warning message and make sure the user wants to proceed
+    QMessageBox msgBox;
+    QString msg = "This function will attemp to set the bootloader boot flag in the MIPS system. ";
+    msg += "This function is provided as part of an error recovery process and should not normally be necessary. ";
+    msg += "If the boot flag is set on an erased DUE the results are unpredictable.\n";
+    msgBox.setText(msg);
+    msgBox.setInformativeText("Are you sure you want to contine?");
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    int ret = msgBox.exec();
+    if(ret == QMessageBox::No) return;
+    // Select the Terminal tab and clear the display
+    ui->tabMIPS->setCurrentIndex(1);
+    // Make sure MIPS is in ready state
+    msg = "Unplug any RF drive heads from MIPS before you proceed. This includes unplugging the FAIMS RF deck as well. ";
+    msg += "It is assumed that you have already established communications with the MIPS system. ";
+    msg += "If the connection is not establised this function will exit with no action.";
+    msgBox.setText(msg);
+    msgBox.setInformativeText("");
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.exec();
+    // Set boot bit
+    cmd = appPath + "/bossac -b -R";
+    executeProgrammerCommand(cmd);
+}
+
+// This function is called from a menu selection to save the current MIPS firmware
+// to a file.
+void MIPS::saveMIPSfirmware(void)
+{
+    QString cmd;
+    QString str;
+
+    // Pop up a warning message and make sure the user wants to proceed
+    QMessageBox msgBox;
+    QString msg = "This will read the current MIPS firmware and save to a file. ";
+    msg += "You should save to a file with the .bin extension and indicate the current version.\n";
+    msgBox.setText(msg);
+    msgBox.setInformativeText("Are you sure you want to contine?");
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    int ret = msgBox.exec();
+    if(ret == QMessageBox::No) return;
+    // Select the Terminal tab and clear the display
+    ui->tabMIPS->setCurrentIndex(1);
+    // Select the binary file we are going to save MIPS firmware to
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save MIPS firmware .bin file"),"",tr("Files (*.bin *.*)"));
+    if(fileName == "") return;
+    // Make sure MIPS is in ready state
+    msg = "Unplug any RF drive heads from MIPS before you proceed. This includes unplugging the FAIMS RF deck as well. ";
+    msg += "It is assumed that you have already established communications with the MIPS system. ";
+    msg += "If the connection is not establised this function will exit with no action.";
+    msgBox.setText(msg);
+    msgBox.setInformativeText("");
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.exec();
+    // Save current MIPS firmware
+    cmd = appPath + "/bossac -r -b " + fileName + " -R";
+    executeProgrammerCommand(cmd);
+}
+
+// This function allows the user to download a new versoin of the MIPS firware.
 void MIPS::programMIPS(void)
 {
     QString cmd;
@@ -182,7 +323,7 @@ void MIPS::programMIPS(void)
     // Select the Terminal tab and clear the display
     ui->tabMIPS->setCurrentIndex(1);
     // Select the binary file we are going to load to MIPS
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Load MIPS firmware .bin file"),"",tr("Files (*.psg *.*)"));
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Load MIPS firmware .bin file"),"",tr("Files (*.bin *.*)"));
     if(fileName == "") return;
     // Make sure MIPS is in ready state
     msg = "Unplug any RF drive heads from MIPS before you proceed. This includes unplugging the FAIMS RF deck as well. ";
@@ -192,60 +333,9 @@ void MIPS::programMIPS(void)
     msgBox.setInformativeText("");
     msgBox.setStandardButtons(QMessageBox::Ok);
     msgBox.exec();
-    // Select the Terminal tab and clear the display
-//    ui->tabMIPS->setCurrentIndex(1);
-    console->clear();
-    // Make sure the app is connected to MIPS
-    if(!serial->isOpen())
-    {
-        console->putData("This application is not connected to MIPS!\n");
-        return;
-    }
-    // Make sure we can locate the programmer tool...
-    #if defined(Q_OS_MAC)
-        cmd = appPath + "/bossac";
-    #else
-        cmd = appPath + "/bossac.exe";
-    #endif
-    QFileInfo checkFile(cmd);
-    if (!checkFile.exists() || !checkFile.isFile())
-    {
-        console->putData("Can't find the programmer!\n");
-        console->putData(cmd.toStdString().c_str());
-        return;
-    }
-    // Erase MIPS's flash
-    console->putData("MIPS is erased!\n");
-    qDebug() << "erasing";
-    closeSerialPort();
-    QThread::sleep(1);
-    while(serial->isOpen()) QApplication::processEvents();
-    serial->setBaudRate(QSerialPort::Baud1200);
-    QApplication::processEvents();
-    serial->open(QIODevice::ReadWrite);
-    serial->setDataTerminalReady(false);
-    QThread::sleep(1);
-    serial->close();
-    QApplication::processEvents();
-    QThread::sleep(5);
-    // Download the bin file to MIPS and restart MIPS
-    QApplication::processEvents();
+    // Program MIPS
     cmd = appPath + "/bossac -e -w -v -b " + fileName + " -R";
-    console->putData(cmd.toStdString().c_str());
-    console->putData("\n");
-    QApplication::processEvents();
-    QStringList arguments;
-    arguments << "-c";
-    arguments << cmd;
-//    arguments << " -h";
-    #if defined(Q_OS_MAC)
-        process.start("/bin/bash",arguments);
-    #else
-        process.start(cmd);
-    #endif
-    console->putData("Download should start soon...\n");
-    connect(&process,SIGNAL(readyReadStandardOutput()),this,SLOT(readProcessOutput()));
-    connect(&process,SIGNAL(readyReadStandardError()),this,SLOT(readProcessOutput()));
+    executeProgrammerCommand(cmd);
 }
 
 void MIPS::readProcessOutput(void)
@@ -676,6 +766,7 @@ void MIPS::MIPSconnect(void)
     {
        openSerialPort();
        serial->setDataTerminalReady(true);
+       ui->lblMIPSconnectionNotes->setHidden(true);
     }
     MIPSsetup();
 }

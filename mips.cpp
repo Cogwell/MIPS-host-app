@@ -31,6 +31,11 @@
 //      1.) Added socket support for networked MIPS.
 //  1.4, January 10, 2016
 //      1.) Added MIPS firmware save and boot bit setting functions
+//  1.5, February 17, 2015
+//      1.) Fixed bug in DC bias page that caused control is focus to update with old value
+//          when returning to page.
+//      2.) Fixed but that did not allow all 16 values to be edited on DC bias page
+//      3.) Fixed range of DC bias page to reflect offset value
 //
 //  To do list:
 //  1.) Refactor the code, here are some to dos:
@@ -167,7 +172,7 @@ MIPS::MIPS(QWidget *parent) :
     ui->leTimePoint->setValidator(new QIntValidator);
     ui->leValue->setValidator(new QIntValidator);
     // Sets the polling loop interval and starts the timer
-    pollTimer->start(1000);
+    pollTimer->start(200);
 }
 
 MIPS::~MIPS()
@@ -177,7 +182,7 @@ MIPS::~MIPS()
 }
 
 
-// This function ic called by the MIPS firmware save or write function. The cmd
+// This function is called by the MIPS firmware save or write function. The cmd
 // string passed contains the programmer invocation command.
 void MIPS::executeProgrammerCommand(QString cmd)
 {
@@ -457,6 +462,14 @@ void MIPS::pollLoop(void)
         }
         */
     }
+    if( ui->tabMIPS->tabText(ui->tabMIPS->currentIndex()) == "DCbias")
+    {
+         //UpdateDCbias();
+    }
+    if( ui->tabMIPS->tabText(ui->tabMIPS->currentIndex()) == "RFdriver")
+    {
+        //UpdateRFdriver();
+    }
 }
 
 int MIPS::Referenced(QList<psgPoint*> P, int i)
@@ -569,8 +582,10 @@ void MIPS::DCbiasUpdated(void)
    QObject* obj = sender();
    QString res;
 
+   if(!((QLineEdit *)obj)->isModified()) return;
    res = obj->objectName().mid(2).replace("_",",") + "," + ((QLineEdit *)obj)->text() + "\n";
    SendCommand(res.toStdString().c_str());
+   ((QLineEdit *)obj)->setModified(false);
 }
 
 void MIPS::SendCommand(QString message)
@@ -659,6 +674,7 @@ void MIPS::resizeEvent(QResizeEvent* event)
 void MIPS::UpdateDCbias(void)
 {
     QString res;
+    int numchan=0;
 
     ui->tabMIPS->setEnabled(false);
     ui->statusBar->showMessage(tr("Updating DC bias controls..."));
@@ -669,6 +685,7 @@ void MIPS::UpdateDCbias(void)
     ui->gbDCbias2->setEnabled(false);
     if(res.toInt() >= 8) ui->gbDCbias1->setEnabled(true);
     if(res.toInt() > 8) ui->gbDCbias2->setEnabled(true);
+    numchan = res.toInt();
     res = SendMessage("GDCPWR\n");
     if(res == "ON") ui->chkPowerEnable->setChecked(true);
     else  ui->chkPowerEnable->setChecked(false);
@@ -680,6 +697,24 @@ void MIPS::UpdateDCbias(void)
             res = "G" + w->objectName().mid(3).replace("_",",") + "\n";
             ((QLineEdit *)w)->setText(SendMessage(res));
        }
+    }
+    // Adjust range based on offet value
+    ui->leGDCMIN_1->setText( QString::number(ui->leGDCMIN_1->text().toFloat()  + ui->leSDCBOF_1->text().toFloat()));
+    ui->leGDCMAX_1->setText( QString::number(ui->leGDCMAX_1->text().toFloat()  + ui->leSDCBOF_1->text().toFloat()));
+    if(numchan > 8)
+    {
+        QObjectList widgetList = ui->gbDCbias2->children();
+        foreach(QObject *w, widgetList)
+        {
+           if(w->objectName().contains("le"))
+           {
+                res = "G" + w->objectName().mid(3).replace("_",",") + "\n";
+                ((QLineEdit *)w)->setText(SendMessage(res));
+           }
+        }
+        // Adjust range based on offet value
+        ui->leGDCMIN_9->setText( QString::number(ui->leGDCMIN_9->text().toFloat()  + ui->leSDCBOF_9->text().toFloat()));
+        ui->leGDCMAX_9->setText( QString::number(ui->leGDCMAX_9->text().toFloat()  + ui->leSDCBOF_9->text().toFloat()));
     }
     ui->tabMIPS->setEnabled(true);
     ui->statusBar->showMessage(tr(""));

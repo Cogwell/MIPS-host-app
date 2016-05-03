@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MIPS, Version 1.4 January 10, 2016</string>
+   <string>MIPS, Version 1.5 February 16, 2016</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QTabWidget" name="tabMIPS">
